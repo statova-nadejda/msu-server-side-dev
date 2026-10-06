@@ -1,7 +1,7 @@
-const books = require('../models/bookModel');
-const authors = require('../models/authorModel');
+import books, { find, length, map, push, findIndex, splice, filter } from '../models/bookModel';
+import { find as _find } from '../models/authorModel';
 
-exports.getAllBooks = (req, res) => {
+export function getAllBooks(req, res) {
     const { genre, year } = req.query;
 
     let result = books;
@@ -19,12 +19,12 @@ exports.getAllBooks = (req, res) => {
     }
 
     res.json(result);
-};
+}
 
-exports.getBookById = (req, res) => {
+export function getBookById(req, res) {
     const id = Number(req.params.id);
 
-    const book = books.find(book => book.id === id);
+    const book = find(book => book.id === id);
 
     if (!book) {
         return res.status(404).json({
@@ -33,9 +33,9 @@ exports.getBookById = (req, res) => {
     }
 
     res.json(book);
-};
+}
 
-exports.createBook = (req, res) => {
+export function createBook(req, res) {
     const { title, authorId, genre, year } = req.body;
 
     if (!title || !authorId || !genre || !year) {
@@ -44,7 +44,7 @@ exports.createBook = (req, res) => {
         });
     }
 
-    const authorExists = authors.find(
+    const authorExists = _find(
         author => author.id === Number(authorId)
     );
 
@@ -55,8 +55,8 @@ exports.createBook = (req, res) => {
     }
 
     const newBook = {
-        id: books.length > 0
-            ? Math.max(...books.map(book => book.id)) + 1
+        id: length > 0
+            ? Math.max(...map(book => book.id)) + 1
             : 1,
         title,
         authorId: Number(authorId),
@@ -64,15 +64,15 @@ exports.createBook = (req, res) => {
         year: Number(year)
     };
 
-    books.push(newBook);
+    push(newBook);
 
     res.status(201).json(newBook);
-};
+}
 
-exports.updateBook = (req, res) => {
+export function updateBook(req, res) {
     const id = Number(req.params.id);
 
-    const book = books.find(book => book.id === id);
+    const book = find(book => book.id === id);
 
     if (!book) {
         return res.status(404).json({
@@ -83,7 +83,7 @@ exports.updateBook = (req, res) => {
     const { title, authorId, genre, year } = req.body;
 
     if (authorId !== undefined) {
-        const authorExists = authors.find(
+        const authorExists = _find(
             author => author.id === Number(authorId)
         );
 
@@ -109,12 +109,12 @@ exports.updateBook = (req, res) => {
     }
 
     res.json(book);
-};
+}
 
-exports.deleteBook = (req, res) => {
+export function deleteBook(req, res) {
     const id = Number(req.params.id);
 
-    const index = books.findIndex(
+    const index = findIndex(
         book => book.id === id
     );
 
@@ -124,23 +124,23 @@ exports.deleteBook = (req, res) => {
         });
     }
 
-    const deletedBook = books.splice(index, 1);
+    const deletedBook = splice(index, 1);
 
     res.json(deletedBook[0]);
-};
+}
 
-exports.searchBooks = (req, res) => {
+export function searchBooks(req, res) {
     const { title } = req.query;
 
     if (!title) {
         return res.json([]);
     }
 
-    const result = books.filter(book =>
+    const result = filter(book =>
         book.title
             .toLowerCase()
             .includes(title.toLowerCase())
     );
 
     res.json(result);
-};
+}

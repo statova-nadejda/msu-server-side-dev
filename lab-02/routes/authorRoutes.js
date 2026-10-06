@@ -1,13 +1,12 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+const router = Router();
 
-const authorController =
-    require('../controllers/authorController');
+import { getAllAuthors, getAuthorBooks, getAuthorById } from '../controllers/authorController';
 
-router.get('/', authorController.getAllAuthors);
+router.get('/', getAllAuthors);
 
-router.get('/:id/books', authorController.getAuthorBooks);
+router.get('/:id/books', getAuthorBooks);
 
-router.get('/:id', authorController.getAuthorById);
+router.get('/:id', getAuthorById);
 
-module.exports = router;
+export default router;

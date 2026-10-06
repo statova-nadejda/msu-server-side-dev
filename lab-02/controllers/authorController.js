@@ -1,14 +1,14 @@
-const authors = require('../models/authorModel');
-const books = require('../models/bookModel');
+import authors, { find } from '../models/authorModel';
+import { filter } from '../models/bookModel';
 
-exports.getAllAuthors = (req, res) => {
+export function getAllAuthors(req, res) {
     res.json(authors);
-};
+}
 
-exports.getAuthorById = (req, res) => {
+export function getAuthorById(req, res) {
     const id = Number(req.params.id);
 
-    const author = authors.find(
+    const author = find(
         author => author.id === id
     );
 
@@ -19,12 +19,12 @@ exports.getAuthorById = (req, res) => {
     }
 
     res.json(author);
-};
+}
 
-exports.getAuthorBooks = (req, res) => {
+export function getAuthorBooks(req, res) {
     const id = Number(req.params.id);
 
-    const author = authors.find(
+    const author = find(
         author => author.id === id
     );
 
@@ -34,9 +34,9 @@ exports.getAuthorBooks = (req, res) => {
         });
     }
 
-    const authorBooks = books.filter(
+    const authorBooks = filter(
         book => book.authorId === id
     );
 
     res.json(authorBooks);
-};
+}

@@ -1,9 +1,9 @@
 const express = require('express');
 
-const bookRoutes = require('./routes/bookRoutes');
-const authorRoutes = require('./routes/authorRoutes');
+const bookRoutes = require('./routes/bookRoutes').default;
+const authorRoutes = require('./routes/authorRoutes').default;
 
-const logger = require('./middleware/logger');
+const logger = require('./middleware/logger').default;
 
 const app = express();
 

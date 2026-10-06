@@ -16,4 +16,4 @@ const authors = [
     }
 ];
 
-module.exports = authors;
+export default authors;
